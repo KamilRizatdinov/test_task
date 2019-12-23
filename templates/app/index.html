@@ -18,6 +18,13 @@
             <input id="submit-btn" class="button" type="submit" disabled>
         </form>
     </div>
+
+    <div class="content-wrapper">
+        {% if subject %}
+            <h3>{{ subject.result }}</h3>
+            <p>{{ subject.query_string }}</p>
+        {% endif %}
+    </div>
     <script src="{% static 'app/js/index.js' %}"></script>
 </body>
 </html>
