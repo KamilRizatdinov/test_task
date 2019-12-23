@@ -2,6 +2,7 @@ import json
 
 from django.shortcuts import render, reverse
 from django.http import HttpResponseRedirect
+from django.utils import timezone
 import requests
 
 from app.models import Subject
@@ -19,6 +20,17 @@ def index(request):
                   context={'subject': subject})
 
 
+def all(request):
+    try:
+        subjects_list = Subject.objects.all().order_by('-request_time')
+    except IndexError:
+        subjects_list = None
+
+    return render(request=request,
+                  template_name='app/all.html',
+                  context={'subjects_list': subjects_list})
+
+
 def query(request):
     endpoint = "https://rmsp.nalog.ru/search-proc.json"
     query_string = request.POST['query']
@@ -31,7 +43,8 @@ def query(request):
         data = json_data[0]
         subject = Subject(
             inn=data['inn'],
-            orgn=data['ogrn'],
+            request_time=timezone.now(),
+            ogrn=data['ogrn'],
             cityname=data['cityname'],
             citytype=data['citytype'],
             registration_date=data['dtregistry'],

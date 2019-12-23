@@ -1,0 +1,28 @@
+.menu-wrapper li {
+    padding: 10px 20px 10px 20px;
+    display: inline-block;
+}
+
+.menu-wrapper a {
+    border-radius: 5px;
+    border: 1px solid white;
+}
+
+.menu-wrapper a:link, .menu-wrapper a:visited {
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.menu-wrapper a:hover, .menu-wrapper a:active {
+    border: 1px dashed white;
+}
+
+.menu-wrapper {
+    position: sticky;
+    top: 0;
+    background-color: rgb(43, 40, 40);
+    width: 100%;
+}

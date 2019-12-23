@@ -1,0 +1,12 @@
+.button {
+    background-color: rgb(43, 40, 40);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.button:disabled {
+    background-color: #818181;
+}

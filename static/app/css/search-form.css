@@ -1,0 +1,33 @@
+.form-wrapper {
+    display: flex;
+    margin: 100px;
+    text-align: center;
+}
+
+.form-wrapper form {
+    padding: 10px;
+    margin: auto;
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+#query-type {
+    width: 100%;
+    font-size: 20px;
+    background-color: rgb(87, 81, 81);
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+#query {
+    width: 80%;
+    font-size: 20px;
+    border-radius: 0 0 0 10px;
+}
+
+#submit-btn {
+    width: 20%;
+    border-radius: 0 0 10px 0;
+}

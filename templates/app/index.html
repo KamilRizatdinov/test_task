@@ -4,32 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <title>App</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'app/css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/search-form.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/menu.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/content.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/button.css' %}">
+
 </head>
 <body>
+    {% include 'app/menu.html' %}
     <div class="form-wrapper">
         <form method="post" action="{% url 'app:query' %}">
             {% csrf_token %}
-            <div class="header-holder">
-                <label>Search</label><br>
-            </div>
+            <p id="query-type">Unknown</p>
             <input class="input-area" id="query" type="text" name="query" maxlength="100" placeholder="ОГРН/ИНН" required><br>
-            <p id="query-type">?</p>
             <input id="submit-btn" class="button" type="submit" disabled>
         </form>
     </div>
 
+    {% if subject %}
     <div class="content-wrapper">
-        {% if subject %}
-            <h3>{{ subject.name_ex }}</h3>
-            <p>INN: {{ subject.inn }}</p>
-            <p>OGRN: {{ subject.ogrn }}</p>
-            <p>CITYNAME: {{ subject.cityname }}</p>
-            <p>CITYTYPE: {{ subject.citytype }}</p>
-            <p>DESCRIPTION: {{ subject.description }}</p>
-            <p>REGISTRATION DATE: {{ subject.registration_date }}</p>
-        {% endif %}
+        <div class="content-holder">
+            <div class="name-holder">
+                <h3>{{ subject.name_ex }}</h3>
+            </div>
+
+            <div class="data-holder">
+                <p>INN: {{ subject.inn }}</p>
+                <p>OGRN: {{ subject.ogrn }}</p>
+                <p>CITYNAME: {{ subject.cityname }}</p>
+                <p>CITYTYPE: {{ subject.citytype }}</p>
+                <p>DESCRIPTION: {{ subject.description }}</p>
+                <p>REGISTRATION DATE: {{ subject.registration_date }}</p>
+            </div>
+        </div>
     </div>
+    {% endif %}
+
     <script src="{% static 'app/js/index.js' %}"></script>
 </body>
 </html>

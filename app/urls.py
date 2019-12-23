@@ -7,4 +7,5 @@ app_name = 'app'
 urlpatterns = [
     path('', views.index, name='index'),
     path('query/', views.query, name='query'),
+    path('all/', views.all, name='all'),
 ]

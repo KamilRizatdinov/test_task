@@ -1,0 +1,27 @@
+.content-wrapper {
+    text-align: center;
+}
+
+.content-holder {
+    margin: auto;
+    margin-top: 30px;
+    width: 80%;
+    border-radius: 10px;
+
+    box-shadow: 10px 10px 100px 10px rgba(60, 60, 60, 0.34);
+    background-color: white;
+}
+
+.name-holder {
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    border-bottom: 1px solid black;
+    padding: 10px 0 10px 0;
+    background-color: rgb(43, 40, 40);
+    color: white;
+}
+
+.data-holder {
+    text-align: left;
+    padding: 10px 0 10px 20px;
+}
