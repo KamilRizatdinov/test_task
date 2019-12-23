@@ -21,8 +21,13 @@
 
     <div class="content-wrapper">
         {% if subject %}
-            <h3>{{ subject.result }}</h3>
-            <p>{{ subject.query_string }}</p>
+            <h3>{{ subject.name_ex }}</h3>
+            <p>INN: {{ subject.inn }}</p>
+            <p>OGRN: {{ subject.ogrn }}</p>
+            <p>CITYNAME: {{ subject.cityname }}</p>
+            <p>CITYTYPE: {{ subject.citytype }}</p>
+            <p>DESCRIPTION: {{ subject.description }}</p>
+            <p>REGISTRATION DATE: {{ subject.registration_date }}</p>
         {% endif %}
     </div>
     <script src="{% static 'app/js/index.js' %}"></script>

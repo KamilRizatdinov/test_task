@@ -28,7 +28,16 @@ def query(request):
     if r.status_code != 200 or not json_data:
         return HttpResponseRedirect(reverse('app:index'))
     else:
-        subject = Subject(query_string=query_string, result=json_data[0]['name_ex'])
+        data = json_data[0]
+        subject = Subject(
+            inn=data['inn'],
+            orgn=data['ogrn'],
+            cityname=data['cityname'],
+            citytype=data['citytype'],
+            registration_date=data['dtregistry'],
+            name_ex=data['name_ex'],
+            description=data['okved1name']
+        )
         subject.save()
 
     return HttpResponseRedirect(reverse('app:index'))
