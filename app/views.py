@@ -20,7 +20,7 @@ def index(request):
                   context={'subject': subject})
 
 
-def all(request):
+def show_all(request):
     try:
         subjects_list = Subject.objects.all().order_by('-request_time')
     except IndexError:
