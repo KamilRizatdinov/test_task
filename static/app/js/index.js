@@ -6,7 +6,7 @@ let reg = /^\d+$/;
 query_form.addEventListener('input', UpdateListener);
 
 function UpdateListener(input) {
-    let query = input.target.value
+    let query = input.target.value;
     let length = query.length;
     if ((length === 13) && reg.exec(query)) {
         query_type.innerText = "OGRN";
