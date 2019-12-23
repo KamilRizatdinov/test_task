@@ -1,8 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>App</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/index.css' %}">
 </head>
 <body>
     <div class="form-wrapper">
@@ -11,9 +13,11 @@
             <div class="header-holder">
                 <label>Search</label><br>
             </div>
-            <input class="input-area" type="text" name="query" maxlength="50" placeholder="ОГРН/ИНН" required><br>
+            <input class="input-area" id="query" type="text" name="query" maxlength="100" placeholder="ОГРН/ИНН" required><br>
+            <p id="query-type">?</p>
             <input class="button" type="submit">
         </form>
     </div>
+    <script src="{% static 'app/js/index.js' %}"></script>
 </body>
 </html>
