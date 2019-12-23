@@ -9,11 +9,8 @@ class Subject(models.Model):
     inn = models.CharField(max_length=10, primary_key=True)
     ogrn = models.CharField(max_length=13)
     request_time = models.DateTimeField(auto_now_add=True)
-    cityname = models.CharField(max_length=50)
-    citytype = models.CharField(max_length=50)
     registration_date = models.CharField(max_length=50)
     name_ex = models.TextField()
-    description = models.TextField()
 
     def requested_recently(self):
         return self.request_time >= timezone.now() - datetime.timedelta(minutes=5)

@@ -1,10 +1,8 @@
-import json
-
 from django.shortcuts import render, reverse
 from django.http import HttpResponseRedirect
 from django.utils import timezone
+import json
 import requests
-
 from app.models import Subject, Query
 
 
@@ -32,7 +30,7 @@ def show_all(request):
 
 
 def query(request):
-    query_string = request.POST['query']
+    query_string = request.POST.get('query', '')
 
     try:
         check_query = Query.objects.get(query_string=query_string)
@@ -50,11 +48,8 @@ def query(request):
                 inn=data['inn'],
                 request_time=timezone.now(),
                 ogrn=data['ogrn'],
-                cityname=data['cityname'],
-                citytype=data['citytype'],
                 registration_date=data['dtregistry'],
-                name_ex=data['name_ex'],
-                description=data['okved1name']
+                name_ex=data['name_ex']
             )
             subject.save()
             subject.query_set.create(query_string=query_string)
