@@ -1,28 +1,41 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
-import json 
-import requests
-from app.models import Subject
+from django.utils import timezone
+
 from api.serializers import SubjectSerializer
+from app.models import Subject
+from app.utils import fetch_data, get_subject_by_query_string
 
 
 # Create your views here.
 @csrf_exempt
 def subjects_list(request):
     if request.method == 'GET':
-        snippets = Subject.objects.all()
-        serializer = SubjectSerializer(snippets, many=True)
-        print(serializer.data)
-        return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False})
+        subjects= Subject.objects.all()
+        serializer = SubjectSerializer(subjects, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
     elif request.method == 'POST':
-        # endpoint = "https://rmsp.nalog.ru/search-proc.json"
-        data = JSONParser().parse(request)
-        # r = requests.post(url=endpoint,
-        #                   data={'query': query_string, 'mode': 'quick'})
-        # json_data = json.loads(r.text)['data']
-        # serializer = SubjectSerializer(data=data)
-        # if serializer.is_valid():
-        #     serializer.save()
-        return JsonResponse(data, status=201)
-    # return JsonResponse(serializer.errors, status=400)
+        query_string = request.POST.get('query', '')
+        subject = get_subject_by_query_string(query_string=query_string)
+
+        if subject and subject.requested_recently():
+            subject.request_time = timezone.now()
+            subject.save(update_fields=['request_time'])
+            serializer = SubjectSerializer(data=subject.to_dict())
+            if serializer.is_valid():
+                return JsonResponse(serializer.data, status=201)
+        else:
+            data = fetch_data(
+                url='https://rmsp.nalog.ru/search-proc.json',
+                query_string=query_string,
+            )
+            if data:
+                subject = Subject(**data)
+                subject.save()
+                subject.query_set.create(query_string=query_string)
+                serializer = SubjectSerializer(data=subject.to_dict())
+                if serializer.is_valid():
+                    return JsonResponse(serializer.data, status=201)
+
+        return JsonResponse({'error': 'Query string is invalid'}, status=400)
