@@ -1,15 +1,19 @@
-from django.shortcuts import render, reverse
-from django.http import HttpResponseRedirect
-from django.utils import timezone
 import json
+from contextlib import suppress
+
 import requests
-from app.models import Subject, Query
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, reverse
+from django.utils import timezone
+
+from app.models import Query, Subject
+from app.utils import fetch_data, get_subject_by_query_string
 
 
 # Create your views here.
 def index(request):
     try:
-        subject = Subject.objects.all().order_by('-request_time')[0]
+        subject = Subject.objects.latest('request_time')
     except IndexError:
         subject = None
 
@@ -31,32 +35,19 @@ def show_all(request):
 
 def query(request):
     query_string = request.POST.get('query', '')
+    subject = get_subject_by_query_string(query_string=query_string)
 
-    try:
-        check_query = Query.objects.get(query_string=query_string)
-    except Query.DoesNotExist:
-        endpoint = "https://rmsp.nalog.ru/search-proc.json"
-        r = requests.post(url=endpoint,
-                          data={'query': query_string, 'mode': 'quick'})
-        json_data = json.loads(r.text)['data']
-
-        if r.status_code != 200 or not json_data:
-            return HttpResponseRedirect(reverse('app:index'))
-        else:
-            data = json_data[0]
-            subject = Subject(
-                inn=data['inn'],
-                request_time=timezone.now(),
-                ogrn=data['ogrn'],
-                registration_date=data['dtregistry'],
-                name_ex=data['name_ex']
-            )
+    if subject and subject.requested_recently():
+        subject.request_time = timezone.now()
+        subject.save(update_fields=['request_time'])
+    else:
+        data = fetch_data(
+            url='https://rmsp.nalog.ru/search-proc.json',
+            query_string=query_string,
+        )
+        if data:
+            subject = Subject(**data)
             subject.save()
             subject.query_set.create(query_string=query_string)
-    else:
-        subject = Subject.objects.get(inn=check_query.result.inn)
-        if subject.requested_recently():
-            subject.request_time = timezone.now()
-            subject.save(update_fields=['request_time'])
 
     return HttpResponseRedirect(reverse('app:index'))
