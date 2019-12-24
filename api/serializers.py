@@ -1,9 +1,10 @@
 from rest_framework import serializers
-from app.models import Subject, Query
+
+from app.models import Subject
 
 
 class SubjectSerializer(serializers.Serializer):
-    inn = serializers.CharField(read_only=True, max_length=10)
+    inn = serializers.CharField(max_length=10)
     ogrn = serializers.CharField(max_length=13)
     request_time = serializers.DateTimeField()
     registration_date = serializers.CharField(max_length=50)
