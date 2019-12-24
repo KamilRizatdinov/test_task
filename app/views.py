@@ -9,7 +9,7 @@ from app.utils import fetch_data, get_subject_by_query_string
 # Create your views here.
 def index(request):
     try:
-        subject = Subject.objects.latest('request_time')
+        subject = Subject.objects.all().order_by('-request_time')[0]
     except IndexError:
         subject = None
 
