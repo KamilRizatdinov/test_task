@@ -1,6 +1,8 @@
-import requests
 import json
+
+import requests
 from django.utils import timezone
+
 from app.models import Query
 
 

@@ -1,6 +1,6 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 from api.serializers import SubjectSerializer
 from app.models import Subject

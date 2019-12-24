@@ -1,12 +1,8 @@
-import json
-from contextlib import suppress
-
-import requests
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 from django.utils import timezone
 
-from app.models import Query, Subject
+from app.models import Subject
 from app.utils import fetch_data, get_subject_by_query_string
 
 
