@@ -1,7 +1,7 @@
+import datetime
+
 from django.db import models
 from django.utils import timezone
-
-import datetime
 
 
 # Create your models here.
@@ -14,6 +14,9 @@ class Subject(models.Model):
 
     def requested_recently(self):
         return self.request_time >= timezone.now() - datetime.timedelta(minutes=5)
+
+    def to_dict(self):
+        return Subject.objects.filter(pk=self.pk).values().first()
 
     def __str__(self):
         return self.name_ex
